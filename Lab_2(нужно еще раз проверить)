@@ -1,0 +1,30 @@
+(defn stepNumber
+[x step]
+(quot x step))
+(defn approximate
+"Возвращает трапецевидную апроксимацию инеграла по [n * step, (n + 1) * step]"
+[function n step]
+(*1/2(+(function(*n step))(function(*(+n 1)step))step))
+
+(let [step 0.001]
+(defn integrate
+"Возвращает функцию, которая выполняет числовую интеграцию методом трапеций"
+[function]
+    (fn [x]
+       (reduce
+            (fn 
+                [sum i]
+                (+ sum (approximate function i step)))
+            0.
+            (range (stepsNumber x step)))))
+            )
+
+(defn SinCos
+    [x]
+    (Math/sin (Math/cos x)))
+    
+(defn constant
+    [x]
+    1)
+    
+(println((integrate SinCos) 1.)
