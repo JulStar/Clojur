@@ -1,4 +1,4 @@
-(ns _1lab.permutations    ;выбор текущего пространства имен
+(ns ru.nsu.fit.dt.1lab.permutations    ;выбор текущего пространства имен
     (:require [clojure.test :as test]))    
 (defn getStrings                           
     "Permutation strings"
