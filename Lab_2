@@ -1,34 +1,29 @@
 (ns ru.nsu.fit.starcheus.Integral
     (:gen-class))
     
-(defn stepNumber
-"Возвращает колличество шагов (с фиксированной длинной)"
-[x step]
-(quot x step))
+(defn stepsNumber
+    "Returns number of steps in approximation with fixed step lengt."
+    [x step]
+    (quot x step)) 
 
 (defn approximate
-"Возвращает трапецевидную апроксимацию инеграла по [n * step, (n + 1) * step]"
-[function n step]
-(*1/2(+(function(*n step))(function(*(+n 1)step))
-step))
+    "Returns trapezoid approximation of integral in [n * step, (n + 1) * step]."
+    [function n step]
+        (* 1/2 (+ (function (* n step)) (function (* (+ n 1) step))) step))
 
-(defn aproximate
-""
-[function from to]
-    (*1/2(+(function from)
-        (function to))(-to from)))
 
-((defn approximateRange
-    "Возвращает трапециевидной аппроксимации интеграла в [from to]."
+(defn approximateRange
+    "Returns trapezoid approximation of integral in [from to]."
     [function from to]
-        (* 1/2  (+ (function from) (function to)) (- to from))))
+        (* 1/2  (+ (function from) (function to)) (- to from)))
+
 
 (let [step 0.001]
-(defn integrate
-"Возвращает функцию, которая выполняет числовую интеграцию методом трапеций"
-[function,aproximate]
+    (defn integrate
+    "Returns function that perform numerical integration by the method of trapezoids."
+    [function, approximate]
     (fn [x]
-       (+(reduce
+       ( + (reduce
             (fn 
                 [sum i]
                 (+ sum (approximate function i step)))
@@ -37,25 +32,25 @@ step))
             (approximateRange function x (* step (stepsNumber x step))))
     )))
 
-(defn Sin
-    [x]
-     (Math/sin x))
-    
 (defn constant
     [x]
     1)
 
 (defn line
-[x]
-x)
+    [x]
+    x)
+
+(defn sin
+    [x]
+    (Math/sin x))
 
 (def memoizeApproximate 
     (memoize approximate))
 
 (defn -main
         [& args]
-(println((integrate SinCos) 1.))
-(time ((integrate sin  approximate) 10.))
+    (println ((integrate line  approximate) 1.))
+    (time ((integrate sin  approximate) 10.))
     (time ((integrate sin memoizeApproximate) 100.))
     (time ((integrate sin memoizeApproximate) 101.))
     (time ((integrate sin memoizeApproximate) 99.)))
